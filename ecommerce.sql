@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 06, 2026 at 04:46 PM
+-- Generation Time: Jan 06, 2026 at 07:47 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -34,8 +34,16 @@ CREATE TABLE `products` (
   `Stock` int(250) NOT NULL,
   `Sold` int(250) NOT NULL,
   `Product Img` varchar(200) NOT NULL,
-  `Adding Date` date NOT NULL
+  `Adding Date` date NOT NULL,
+  `Price` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `products`
+--
+
+INSERT INTO `products` (`Product Name`, `Description`, `Ratings`, `Stock`, `Sold`, `Product Img`, `Adding Date`, `Price`) VALUES
+('Zx', 'aadsadasd', '2', 232, 0, 'uploads/prod_695d325d865806.99443201.png', '2026-01-06', 34344);
 
 -- --------------------------------------------------------
 
@@ -58,7 +66,8 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`ID`, `Username`, `Email`, `Password`, `ProfileImg`, `DateCreated`) VALUES
 (3, 'asdad', 'cosmarkgarcia@gmail.com', '$2y$10$Nxd3nH.pUWdEmTNaHprR5e855ZqhHJlSmrB3rXyVdt4LV97ELB/hy', '../uploads/users/user_695d2473d1c113.87862721.png', '2026-01-06 23:04:19'),
-(5, 'sdfsdf', 'vincentjames.manalastas@yahoo.com', '$2y$10$RVCnhuQlyxUl0j46hPXRU.cSxiilkYPS0/rx1nTi7eY3xJbtAPaFO', '../uploads/users/user_695d279b8b3ff6.63251455.png', '2026-01-06 23:17:47');
+(5, 'sdfsdf', 'vincentjames.manalastas@yahoo.com', '$2y$10$RVCnhuQlyxUl0j46hPXRU.cSxiilkYPS0/rx1nTi7eY3xJbtAPaFO', '../uploads/users/user_695d279b8b3ff6.63251455.png', '2026-01-06 23:17:47'),
+(6, 'cosmark', 'cosmarkmanalastas@gmail.com', '$2y$10$eYbDVbNIpzJu54LNoYdTOeM2fQp/7GfHfybcF.myX0EvfVofpRc6C', NULL, '2026-01-07 02:12:10');
 
 --
 -- Indexes for dumped tables
@@ -80,7 +89,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
