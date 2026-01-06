@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 06, 2026 at 04:40 PM
+-- Generation Time: Jan 06, 2026 at 04:46 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -20,6 +20,22 @@ SET time_zone = "+00:00";
 --
 -- Database: `ecommerce`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `products`
+--
+
+CREATE TABLE `products` (
+  `Product Name` varchar(200) NOT NULL,
+  `Description` varchar(200) NOT NULL,
+  `Ratings` varchar(50) NOT NULL,
+  `Stock` int(250) NOT NULL,
+  `Sold` int(250) NOT NULL,
+  `Product Img` varchar(200) NOT NULL,
+  `Adding Date` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
