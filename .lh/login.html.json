@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 16,
+            "activePatchIndex": 17,
             "patches": [
                 {
                     "date": 1765816431835,
@@ -72,6 +72,10 @@
                 {
                     "date": 1767682326866,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -4,9 +4,9 @@\n <head>\r\n     <meta charset=\"UTF-8\">\r\n     <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\r\n     <title>Login/Signup Page</title>\r\n-    <link rel=\"stylesheet\" href=\"style/nav.css\">\r\n+    <link rel=\"stylesheet\" href=\"css/nav.css\">\r\n     <link rel=\"stylesheet\" href=\"https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css\">\r\n     <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css\"\r\n         integrity=\"sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==\"\r\n         crossorigin=\"anonymous\" referrerpolicy=\"no-referrer\" />\r\n"
+                },
+                {
+                    "date": 1767698565617,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -202,9 +202,9 @@\n                                 <input type=\"text\" class=\"otp-input\" id=\"otp4\" maxLength=\"1\">\r\n                                 <input type=\"text\" class=\"otp-input\" id=\"otp5\" maxLength=\"1\">\r\n                             </div>\r\n                         </div>\r\n-                        <button type=\"button\" class=\"btn btn-primary btn-block\" onclick=\"sendOTP()\">Send OTP</button>\r\n+                        <button type=\"button\" d class=\"btn btn-primary btn-block\" onclick=\"sendOTP()\">Send OTP</button>\r\n                         <button type=\"submit\" class=\"btn btn-primary btn-block\">Sign Up</button>\r\n                     </form>\r\n                 </div>\r\n             </div>\r\n"
                 }
             ],
             "date": 1765816431835,

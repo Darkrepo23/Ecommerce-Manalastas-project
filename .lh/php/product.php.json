@@ -1,0 +1,18 @@
+{
+    "sourceFile": "php/product.php",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1767700705429,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1767700705429,
+            "name": "Commit-0",
+            "content": "<?php\r\n// Database connection\r\n$host = \"localhost\";\r\n$user = \"root\"; // your DB user\r\n$pass = \"\";     // your DB password\r\n$db   = \"your_database_name\"; // change this\r\n\r\n$conn = new mysqli($host, $user, $pass, $db);\r\n\r\n// Check connection\r\nif ($conn->connect_error) {\r\n    die(\"Connection failed: \" . $conn->connect_error);\r\n}\r\n\r\n// Check if form is submitted\r\nif ($_SERVER['REQUEST_METHOD'] === 'POST') {\r\n\r\n    // Get form data\r\n    $productName = $conn->real_escape_string($_POST['productName']);\r\n    $specsDescription = $conn->real_escape_string($_POST['specsDescription']);\r\n    $rate = isset($_POST['rate']) ? intval($_POST['rate']) : 0;\r\n    $stock = intval($_POST['stock']);\r\n    $sold = 0; // automatically 0\r\n    $addingDate = date('Y-m-d H:i:s');\r\n\r\n    // Handle file upload\r\n    $productImg = '';\r\n    if (isset($_FILES['productImage']) && $_FILES['productImage']['error'] == 0) {\r\n        $targetDir = \"uploads/\";\r\n        // Make sure uploads folder exists\r\n        if (!is_dir($targetDir)) {\r\n            mkdir($targetDir, 0777, true);\r\n        }\r\n\r\n        $fileName = basename($_FILES['productImage']['name']);\r\n        $fileExt = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));\r\n\r\n        // Generate unique file name to avoid overwriting\r\n        $newFileName = uniqid('prod_', true) . '.' . $fileExt;\r\n        $targetFilePath = $targetDir . $newFileName;\r\n\r\n        if (move_uploaded_file($_FILES['productImage']['tmp_name'], $targetFilePath)) {\r\n            $productImg = $targetFilePath; // save path in DB\r\n        } else {\r\n            die(\"Error uploading file.\");\r\n        }\r\n    }\r\n\r\n    // Insert into database\r\n    $sql = \"INSERT INTO products (`Product Name`, `Description`, `Ratings`, `Stock`, `Sold`, `Product Img`, `Adding Date`)\r\n            VALUES ('$productName', '$specsDescription', $rate, $stock, $sold, '$productImg', '$addingDate')\";\r\n\r\n    if ($conn->query($sql) === TRUE) {\r\n        echo \"Product added successfully!\";\r\n        // Optionally redirect back to products page\r\n        // header(\"Location: products.php\");\r\n        // exit();\r\n    } else {\r\n        echo \"Error: \" . $conn->error;\r\n    }\r\n\r\n    $conn->close();\r\n}\r\n?>\r\n"
+        }
+    ]
+}
