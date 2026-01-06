@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login/Signup Page</title>
+    <link rel="stylesheet" href="css/nav.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+        integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            max-width: 500px;
+            margin-top: 50px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .form-container {
+            padding: 40px;
+            background-color: #fff;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+
+        .animation {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Style for Terms and Policy section */
+        .terms-policy {
+            margin-top: 20px;
+            font-size: 0.8rem;
+            color: #6c757d;
+        }
+
+        /* Tabs Styles */
+        .nav-tabs .nav-link {
+            color: #007bff;
+        }
+
+        .nav-tabs .nav-link.active {
+            background-color: #007bff;
+            color: white;
+            border-color: #007bff #007bff #fff;
+        }
+
+        .password-input-group {
+            position: relative;
+        }
+
+        .password-input-group .show-password-button {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            color: #868e96;
+        }
+
+        .password-input-group .show-password-button:focus {
+            outline: none;
+        }
+
+        /* OTP Styles */
+        .otp-input-group {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .otp-input {
+            width: 18%;
+            text-align: center;
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+        }
+
+        .otp-input:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom">
+        <div class="container">
+            <a class="navbar-brand" href="#"><img src="img/logo.png" alt=""></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav"
+                aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-center" id="nav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.html#products">Products</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container animation">
+        <div class="form-container">
+            <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="login-tab" data-toggle="tab" href="#login" role="tab"
+                        aria-controls="login" aria-selected="true">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="signup-tab" data-toggle="tab" href="#signup" role="tab"
+                        aria-controls="signup" aria-selected="false">Sign Up</a>
+                </li>
+            </ul>
+            <div class="tab-content mt-3" id="myTabContent">
+                <div class="tab-pane fade show active" id="login" role="tabpanel" aria-labelledby="login-tab">
+                    <form>
+                        <div class="form-group">
+                            <label for="loginEmail">Email address</label>
+                            <input type="email" class="form-control" id="loginEmail" placeholder="Enter email">
+                        </div>
+                        <div class="form-group">
+                            <label for="loginPassword">Password</label>
+                            <div class="password-input-group">
+                                <input type="password" class="form-control" id="loginPassword" placeholder="Password">
+                                <button type="button" class="show-password-button"
+                                    onclick="toggleLoginPasswordVisibility()">
+                                    <i class="fa fa-eye" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Login</button>
+                        <div class="text-center mt-3">
+                            <a href="#">Forgot Password?</a>
+                        </div>
+                    </form>
+                </div>
+                <div class="tab-pane fade" id="signup" role="tabpanel" aria-labelledby="signup-tab">
+                    <form>
+                        <div class="form-group">
+                            <label for="signupName">Full Name</label>
+                            <input type="text" class="form-control" id="signupName" placeholder="Enter your name">
+                        </div>
+                        <div class="form-group">
+                            <label for="signupEmail">Email address</label>
+                            <input type="email" class="form-control" id="signupEmail" placeholder="Enter email">
+                        </div>
+                        <div class="form-group">
+                            <label for="signupPassword">Password</label>
+                            <div class="password-input-group">
+                                <input type="password" class="form-control" id="signupPassword" placeholder="Password">
+                                <button type="button" class="show-password-button"
+                                    onclick="toggleSignupPasswordVisibility()">
+                                    <i class="fa fa-eye" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>OTP</label>
+                            <div class="otp-input-group">
+                                <input type="text" class="otp-input" id="otp1" maxLength="1">
+                                <input type="text" class="otp-input" id="otp2" maxLength="1">
+                                <input type="text" class="otp-input" id="otp3" maxLength="1">
+                                <input type="text" class="otp-input" id="otp4" maxLength="1">
+                                <input type="text" class="otp-input" id="otp5" maxLength="1">
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-primary btn-block" onclick="sendOTP()">Send OTP</button>
+                        <button type="submit" class="btn btn-primary btn-block">Sign Up</button>
+                    </form>
+                </div>
+            </div>
+            <div class="terms-policy text-center">
+                <p>By signing up, you agree to our <a href="#" data-toggle="modal" data-target="#termsModal">Terms of
+                        Service</a> and <a href="#" data-toggle="modal" data-target="#privacyModal">Privacy Policy</a>.
+                </p>
+            </div>
+        </div>
+    </div>
+    <!-- Terms Modal -->
+    <div class="modal fade" id="termsModal" tabindex="-1" role="dialog" aria-labelledby="termsModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="termsModalLabel">Terms of Service</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Add your terms of service content here -->
+                    <p>This is where your terms of service content goes. You can add detailed information about the
+                        terms and conditions of using our service.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Privacy Modal -->
+    <div class="modal fade" id="privacyModal" tabindex="-1" role="dialog" aria-labelledby="privacyModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="privacyModalLabel">Privacy Policy</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Add your privacy policy content here -->
+                    <p>This is where your privacy policy content goes. Explain how you collect, use, and protect user
+                        data.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#myTab a').on('click', function (e) {
+                e.preventDefault()
+                $(this).tab('show')
+            })
+        });
+
+        function toggleLoginPasswordVisibility() {
+            var passwordInput = document.getElementById("loginPassword");
+            var icon = document.querySelector("#login .show-password-button i");
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                icon.classList.remove("fa-eye");
+                icon.classList.add("fa-eye-slash");
+            } else {
+                passwordInput.type = "password";
+                icon.classList.remove("fa-eye-slash");
+                icon.classList.add("fa-eye");
+            }
+        }
+
+        function toggleSignupPasswordVisibility() {
+            var passwordInput = document.getElementById("signupPassword");
+            var icon = document.querySelector("#signup .show-password-button i");
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                icon.classList.remove("fa-eye");
+                icon.classList.add("fa-eye-slash");
+            } else {
+                passwordInput.type = "password";
+                icon.classList.remove("fa-eye-slash");
+                icon.classList.add("fa-eye");
+            }
+        }
+
+        function sendOTP() {
+            // Add your OTP sending logic here
+            alert("OTP sent!"); // Replace with actual OTP sending code
+        }
+    </script>
+</body>
+
+</html>

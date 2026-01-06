@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart - TechHub</title>
+    <link rel="stylesheet" href="css/nav.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <style>
+        .search-input {
+            border-radius: 20px;
+            padding: 0.5rem 1.5rem;
+            border: 1px solid var(--border-gray);
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            box-shadow: 0 0 0 3px rgba(0, 86, 179, 0.1);
+            border-color: var(--primary-blue);
+        }
+
+        .btn-login {
+            background-color: var(--primary-blue);
+            color: white;
+            padding: 0.5rem 2rem;
+            border-radius: 4px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+        }
+
+        .btn-login:hover {
+            background-color: var(--dark-blue);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 86, 179, 0.3);
+        }
+
+        .cart-icon {
+            font-size: 1.5rem;
+            color: #333;
+            transition: all 0.3s ease;
+        }
+
+        .cart-icon:hover {
+            color: var(--primary-blue);
+            transform: scale(1.1);
+        }
+
+        /* Alert Banner */
+        .alert-banner {
+            background-color: var(--light-gray);
+            padding: 0.8rem;
+            border-bottom: 1px solid var(--border-gray);
+        }
+
+        .alert-close {
+            background: none;
+            border: none;
+            color: #dc3545;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .alert-close:hover {
+            transform: rotate(90deg);
+        }
+
+        /* Back Button */
+        .back-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: white;
+            border: 2px solid var(--border-gray);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: #333;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background-color: var(--primary-blue);
+            color: white;
+            border-color: var(--primary-blue);
+            transform: translateX(-5px);
+        }
+
+        /* Status Tabs */
+        .status-tabs {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            padding: 1rem;
+            margin: 2rem 0;
+        }
+
+        .status-tab {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            background: transparent;
+            color: #666;
+            font-weight: 500;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .status-tab:hover {
+            background-color: rgba(0, 86, 179, 0.05);
+            color: var(--primary-blue);
+        }
+
+        .status-tab.active {
+            background-color: var(--primary-blue);
+            color: white;
+        }
+
+        .status-tab .badge {
+            margin-left: 0.5rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        /* Product Card */
+        .product-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .product-card:hover {
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .product-content {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .product-image-wrapper {
+            flex-shrink: 0;
+        }
+
+        .product-img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .product-img:hover {
+            transform: scale(1.05);
+        }
+
+        .product-details {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .product-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        @media (max-width: 768px) {
+            .product-img {
+                width: 100%;
+                height: 150px;
+            }
+
+            .product-image-wrapper {
+                width: 100%;
+            }
+
+            .product-content {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .product-actions {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0.5rem;
+            }
+
+            .quantity-control {
+                justify-content: center;
+            }
+        }
+
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .qty-btn {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            border: 2px solid var(--primary-blue);
+            background: white;
+            color: var(--primary-blue);
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .qty-btn:hover {
+            background-color: var(--primary-blue);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .qty-btn:active {
+            transform: scale(0.95);
+        }
+
+        .remove-btn {
+            padding: 0.5rem 1.5rem;
+            border-radius: 8px;
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            justify-content: center;
+        }
+
+        .remove-btn:hover {
+            background-color: #c82333;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
+        }
+
+        .cancel-btn {
+            padding: 0.5rem 1.5rem;
+            border-radius: 8px;
+            background-color: #ffc107;
+            color: #333;
+            border: none;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            justify-content: center;
+        }
+
+        .cancel-btn:hover {
+            background-color: #e0a800;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(255, 193, 7, 0.3);
+        }
+
+        .refund-btn {
+            padding: 0.5rem 1.5rem;
+            border-radius: 8px;
+            background-color: #17a2b8;
+            color: white;
+            border: none;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            justify-content: center;
+        }
+
+        .refund-btn:hover {
+            background-color: #138496;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(23, 162, 184, 0.3);
+        }
+
+        .view-btn {
+            padding: 0.5rem 1.5rem;
+            border-radius: 8px;
+            background-color: var(--primary-blue);
+            color: white;
+            border: none;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            justify-content: center;
+        }
+
+        .view-btn:hover {
+            background-color: var(--dark-blue);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 86, 179, 0.3);
+        }
+
+        /* Checkout Section */
+        .checkout-section {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 20px;
+        }
+
+        .btn-checkout {
+            background-color: var(--primary-blue);
+            color: white;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+
+        .btn-checkout:hover {
+            background-color: var(--dark-blue);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 86, 179, 0.3);
+        }
+
+        .btn-checkout:active {
+            transform: translateY(0);
+        }
+
+        /* Footer */
+        .footer {
+            background-color: var(--dark-blue);
+            color: white;
+            padding: 3rem 0 1rem;
+            margin-top: 4rem;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 3rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        .footer-link {
+            color: white;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .footer-link:hover {
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            margin: 2rem 0;
+        }
+
+        .social-icon {
+            width: 50px;
+            height: 50px;
+            background: white;
+            color: var(--dark-blue);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-icon:hover {
+            background-color: var(--primary-blue);
+            color: white;
+            transform: translateY(-5px) rotate(360deg);
+        }
+
+        .custom-checkbox {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .custom-checkbox:hover {
+            transform: scale(1.2);
+        }
+
+        /* Status Order Tabs */
+        .status-tabs {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            padding: 0.5rem;
+            display: flex;
+            gap: 0.5rem;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+
+        .status-tabs::-webkit-scrollbar {
+            display: none;
+        }
+
+        .status-tab {
+            padding: 0.75rem 1.25rem;
+            border: none;
+            background: transparent;
+            color: #666;
+            font-weight: 500;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            position: relative;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .status-tab::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%) scaleX(0);
+            width: 80%;
+            height: 3px;
+            background-color: var(--primary-blue);
+            transition: transform 0.3s ease;
+        }
+
+        .status-tab:hover {
+            background-color: rgba(0, 86, 179, 0.05);
+            color: var(--primary-blue);
+        }
+
+        .status-tab:hover::before {
+            transform: translateX(-50%) scaleX(1);
+        }
+
+        .status-tab.active {
+            background-color: var(--primary-blue);
+            color: white;
+        }
+
+        .status-tab.active::before {
+            display: none;
+        }
+
+        .status-tab i {
+            font-size: 1.2rem;
+        }
+
+        .status-tab .badge {
+            margin-left: 0.25rem;
+            font-size: 0.75rem;
+            animation: pulse 2s infinite;
+        }
+
+        .status-tab.active .badge {
+            background-color: rgba(255, 255, 255, 0.3) !important;
+            color: white !important;
+        }
+
+        .tab-icon-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .navbar-brand {
+                font-size: 0.9rem;
+            }
+
+            .status-tabs {
+                padding: 0.5rem;
+                gap: 0.5rem;
+            }
+
+            .status-tab {
+                padding: 0.6rem 1rem;
+                font-size: 0.9rem;
+            }
+
+            .status-tab i {
+                font-size: 1rem;
+            }
+
+            .status-tab span:not(.badge) {
+                display: none;
+            }
+
+            .checkout-section {
+                position: static;
+                margin-top: 2rem;
+            }
+
+            .footer-links {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .social-icons {
+                gap: 1rem;
+            }
+
+            .price-info {
+                text-align: center;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom">
+        <div class="container">
+            <a class="navbar-brand" href="#"><img src="img/logo.png" alt=""></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav"
+                aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="nav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.html#products">Products</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="cart.html">
+                            <img src="https://cdn-icons-png.flaticon.com/512/2838/2838895.png" alt="Cart" width="30"
+                                height="30">
+                        </a>
+                    </li>
+                    <div class="dropdown ms-lg-3">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="profileDropdown"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            My Profile
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="profileDropdown">
+                            <a class="dropdown-item" href="#">View Profile</a>
+                            <a class="dropdown-item" href="#">Edit Profile</a>
+                            <a class="dropdown-item" href="#">Settings</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">Logout</a>
+                        </div>
+                    </div>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- Alert Banner -->
+    <div class="alert-banner">
+        <div class="container-fluid d-flex justify-content-between align-items-center">
+            <div>
+                <small>Don't have an account? <a href="#" style="color: var(--primary-blue);">Click here to
+                        register</a></small>
+            </div>
+            <button class="alert-close" onclick="this.parentElement.parentElement.style.display='none'">
+                <i class="bi bi-x-circle"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container my-4">
+        <div class="row">
+            <div class="col-12">
+                <button class="back-btn" onclick="window.history.back()">
+                    <i class="bi bi-arrow-left"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Order Status Tabs -->
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="status-tabs">
+                    <button class="status-tab active" data-status="cart">
+                        <i class="bi bi-cart-check-fill"></i>
+                        <span>Cart</span>
+                        <span class="badge bg-light text-dark">1</span>
+                    </button>
+                    <button class="status-tab" data-status="pending">
+                        <i class="bi bi-clock-fill"></i>
+                        <span>Pending</span>
+                        <span class="badge bg-light text-dark">0</span>
+                    </button>
+                    <button class="status-tab" data-status="shipping">
+                        <i class="bi bi-truck"></i>
+                        <span>Shipping</span>
+                        <span class="badge bg-light text-dark">1</span>
+                    </button>
+                    <button class="status-tab" data-status="delivered">
+                        <i class="bi bi-check-circle-fill"></i>
+                        <span>Delivered</span>
+                        <span class="badge bg-light text-dark">3</span>
+                    </button>
+                    <button class="status-tab" data-status="cancel">
+                        <i class="bi bi-x-circle-fill"></i>
+                        <span>Cancel</span>
+                        <span class="badge bg-light text-dark">0</span>
+                    </button>
+                    <button class="status-tab" data-status="refund">
+                        <i class="bi bi-arrow-counterclockwise"></i>
+                        <span>Refund</span>
+                        <span class="badge bg-light text-dark">1</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <!-- Products List -->
+            <div class="col-lg-8 overflow-auto" style="height: 30vw;">
+                <!-- Cart Item -->
+                <div class="product-card" id="cartItem">
+                    <div class="product-content">
+                        <div class="product-image-wrapper">
+                            <img src="https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?w=400&h=400&fit=crop"
+                                alt="Inkjet Printer" class="product-img">
+                        </div>
+                        <div class="product-details">
+                            <h5 class="mb-2">Inkjet Printer</h5>
+                            <p class="text-muted small mb-2">Prints using liquid ink; great for photos and color
+                                documents.</p>
+                            <div class="price-info">
+                                <div class="fw-bold">₱7,350.00</div>
+                                <div class="text-muted small">Total: ₱87,003.02</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-actions">
+                        <div class="quantity-control">
+                            <button class="qty-btn" onclick="changeQty(-1)">
+                                <i class="bi bi-dash"></i>
+                            </button>
+                            <span id="qty" class="fw-bold">23</span>
+                            <button class="qty-btn" onclick="changeQty(1)">
+                                <i class="bi bi-plus"></i>
+                            </button>
+                        </div>
+                        <button class="remove-btn">
+                            <i class="bi bi-trash"></i>
+                            Remove
+                        </button>
+                    </div>
+                </div>
+
+                <div class="product-card" id="cartItem">
+                    <div class="product-content">
+                        <div class="product-image-wrapper">
+                            <img src="https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?w=400&h=400&fit=crop"
+                                alt="Inkjet Printer" class="product-img">
+                        </div>
+                        <div class="product-details">
+                            <h5 class="mb-2">Inkjet Printer</h5>
+                            <p class="text-muted small mb-2">Prints using liquid ink; great for photos and color
+                                documents.</p>
+                            <div class="price-info">
+                                <div class="fw-bold">₱7,350.00</div>
+                                <div class="text-muted small">Total: ₱87,003.02</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-actions">
+                        <div class="quantity-control">
+                            <button class="qty-btn" onclick="changeQty(-1)">
+                                <i class="bi bi-dash"></i>
+                            </button>
+                            <span id="qty" class="fw-bold">23</span>
+                            <button class="qty-btn" onclick="changeQty(1)">
+                                <i class="bi bi-plus"></i>
+                            </button>
+                        </div>
+                        <button class="remove-btn">
+                            <i class="bi bi-trash"></i>
+                            Remove
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Pending/Shipping Item -->
+                <div class="product-card" id="shippingItem" style="display: none;">
+                    <div class="product-content">
+                        <div class="product-image-wrapper">
+                            <img src="https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=400&h=400&fit=crop"
+                                alt="Wireless Mouse" class="product-img">
+                        </div>
+                        <div class="product-details">
+                            <h5 class="mb-2">Wireless Mouse</h5>
+                            <p class="text-muted small mb-2">Ergonomic design with precision tracking.</p>
+                            <div class="price-info">
+                                <div class="fw-bold">₱1,250.00</div>
+                                <div class="text-muted small">Quantity: 2</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-actions">
+                        <div class="text-muted small">
+                            <i class="bi bi-truck me-2"></i>Order is being processed
+                        </div>
+                        <button class="cancel-btn">
+                            <i class="bi bi-x-circle"></i>
+                            Cancel Order
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Delivered Item -->
+                <div class="product-card" id="deliveredItem" style="display: none;">
+                    <div class="product-content">
+                        <div class="product-image-wrapper">
+                            <img src="https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=400&h=400&fit=crop"
+                                alt="Mechanical Keyboard" class="product-img">
+                        </div>
+                        <div class="product-details">
+                            <h5 class="mb-2">Mechanical Keyboard</h5>
+                            <p class="text-muted small mb-2">RGB backlit with blue switches.</p>
+                            <div class="price-info">
+                                <div class="fw-bold">₱3,500.00</div>
+                                <div class="text-muted small">Delivered on Dec 5, 2025</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-actions">
+                        <div class="text-success">
+                            <i class="bi bi-check-circle-fill me-2"></i>Successfully delivered
+                        </div>
+                        <button class="refund-btn">
+                            <i class="bi bi-arrow-counterclockwise"></i>
+                            Request Refund
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Cancelled Item -->
+                <div class="product-card" id="cancelledItem" style="display: none;">
+                    <div class="product-content">
+                        <div class="product-image-wrapper">
+                            <img src="https://images.unsplash.com/photo-1625948515291-69613efd103f?w=400&h=400&fit=crop"
+                                alt="USB Cable" class="product-img">
+                        </div>
+                        <div class="product-details">
+                            <h5 class="mb-2">USB-C Cable</h5>
+                            <p class="text-muted small mb-2">Fast charging cable, 2 meters.</p>
+                            <div class="price-info">
+                                <div class="fw-bold">₱450.00</div>
+                                <div class="text-danger small">Cancelled on Dec 3, 2025</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-actions">
+                        <div class="text-danger">
+                            <i class="bi bi-x-circle-fill me-2"></i>Order cancelled
+                        </div>
+                        <button class="view-btn">
+                            <i class="bi bi-eye"></i>
+                            View Products
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Refund Item -->
+                <div class="product-card" id="refundItem" style="display: none;">
+                    <div class="product-content">
+                        <div class="product-image-wrapper">
+                            <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=400&fit=crop"
+                                alt="Headphones" class="product-img">
+                        </div>
+                        <div class="product-details">
+                            <h5 class="mb-2">Wireless Headphones</h5>
+                            <p class="text-muted small mb-2">Noise cancelling with 30-hour battery.</p>
+                            <div class="price-info">
+                                <div class="fw-bold">₱5,800.00</div>
+                                <div class="text-info small">Refund in progress</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-actions">
+                        <div class="text-info">
+                            <i class="bi bi-arrow-counterclockwise me-2"></i>Refund processing (3-5 business days)
+                        </div>
+                        <button class="view-btn">
+                            <i class="bi bi-receipt"></i>
+                            View Details
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Checkout Section -->
+            <div class="col-lg-4">
+                <div class="checkout-section">
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h4>Order Summary</h4>
+                                    <ul class="list-group mb-4">
+                                        <li class="list-group-item d-flex flex-column justify-content-between align-items-center text-center">
+                                            Merchandise Subtotal
+                                            <span class="badge badge-primary badge-pill " style="color: black;">₱199</span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            Quantity
+                                            <span class="badge badge-primary badge-pill" style="color: black;">1</span>
+                                            <!-- Replace '1' with the actual quantity -->
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            Shipping Subtotal
+                                            <span class="badge badge-primary badge-pill" style="color: black;">₱50</span>
+                                            <!-- Replace '₱50' with the actual shipping cost -->
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="col-md-6 mb-5">
+                                    <h4>Payment Option</h4>
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <p class="card-text"><strong>Cash on Delivery</strong></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <input class="form-check-input custom-checkbox" type="checkbox" id="terms" checked>
+                            <label class="form-check-label" for="terms">
+                                Agree to <a href="#" style="color: var(--primary-blue);">Terms and Conditions</a>
+                            </label>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="d-flex justify-content-between mb-3">
+                        <h5>Total:</h5>
+                        <h5 class="fw-bold">87,003.02</h5>
+                    </div>
+                    <button class="btn-checkout">
+                        <i class="bi bi-credit-card me-2"></i>Checkout
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-links">
+                <a href="#" class="footer-link">ABOUT US</a>
+                <a href="#" class="footer-link">PRODUCT</a>
+                <a href="#" class="footer-link">CONTACT</a>
+            </div>
+            <div class="text-center mb-3">
+                <p>Quality gadgets. Fair prices. Fast service.</p>
+            </div>
+            <div class="social-icons">
+                <a href="#" class="social-icon">
+                    <i class="bi bi-github"></i>
+                </a>
+                <a href="#" class="social-icon">
+                    <i class="bi bi-envelope-fill"></i>
+                </a>
+            </div>
+            <div class="text-center">
+                <small>© 2025 TechHub. All rights reserved.</small>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let quantity = 23;
+
+        function changeQty(delta) {
+            quantity = Math.max(1, quantity + delta);
+            document.getElementById('qty').textContent = quantity;
+
+            // Animate the quantity change
+            const qtyElement = document.getElementById('qty');
+            qtyElement.style.transform = 'scale(1.3)';
+            qtyElement.style.color = 'var(--primary-blue)';
+            setTimeout(() => {
+                qtyElement.style.transform = 'scale(1)';
+                qtyElement.style.color = '';
+            }, 200);
+        }
+
+        // Status tab switching
+        document.querySelectorAll('.status-tab').forEach(tab => {
+            tab.addEventListener('click', function () {
+                document.querySelectorAll('.status-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+
+                const status = this.getAttribute('data-status');
+
+                // Hide all items
+                document.getElementById('cartItem').style.display = 'none';
+                document.getElementById('shippingItem').style.display = 'none';
+                document.getElementById('deliveredItem').style.display = 'none';
+                document.getElementById('cancelledItem').style.display = 'none';
+                document.getElementById('refundItem').style.display = 'none';
+
+                // Show relevant items based on status
+                switch (status) {
+                    case 'cart':
+                        document.getElementById('cartItem').style.display = 'block';
+                        break;
+                    case 'pending':
+                        document.getElementById('shippingItem').style.display = 'block';
+                        break;
+                    case 'shipping':
+                        document.getElementById('shippingItem').style.display = 'block';
+                        break;
+                    case 'delivered':
+                        document.getElementById('deliveredItem').style.display = 'block';
+                        break;
+                    case 'cancel':
+                        document.getElementById('cancelledItem').style.display = 'block';
+                        break;
+                    case 'refund':
+                        document.getElementById('refundItem').style.display = 'block';
+                        break;
+                }
+            });
+        });
+
+        // Add smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
