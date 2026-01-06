@@ -1,2 +1,0 @@
-[2026-01-06 17:03:50] Exception: The number of elements in the type definition string must match the number of bind variables
-[2026-01-06 17:04:17] Exception: The number of elements in the type definition string must match the number of bind variables

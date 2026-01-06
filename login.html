@@ -152,7 +152,7 @@
             </ul>
             <div class="tab-content mt-3" id="myTabContent">
                 <div class="tab-pane fade show active" id="login" role="tabpanel" aria-labelledby="login-tab">
-                    <form>
+                    <form id="loginForm">
                         <div class="form-group">
                             <label for="loginEmail">Email address</label>
                             <input type="email" class="form-control" id="loginEmail" placeholder="Enter email">
@@ -272,6 +272,42 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
+
+        document.getElementById('loginForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value;
+
+            const formData = new FormData();
+            formData.append('email', email);
+            formData.append('password', password);
+
+            try {
+                const response = await fetch('php/sign-in.php', {
+                    method: 'POST',
+                    body: formData
+                });
+                const result = await response.json();
+
+                if (result.success) {
+                    // Store current user info in localStorage
+                    localStorage.setItem('currentUser', JSON.stringify({
+                        id: result.data.ID,
+                        username: result.data.Username
+                    }));
+                    alert('Login successful!');
+                    window.location.href = 'index.html'; // redirect after login
+                } else {
+                    alert(result.message);
+                }
+            } catch (err) {
+                console.error(err);
+                alert('An error occurred while logging in.');
+            }
+        });
+
+
         $(document).ready(function () {
             $('#myTab a').on('click', function (e) {
                 e.preventDefault()
@@ -292,6 +328,10 @@
                 icon.classList.add("fa-eye");
             }
         }
+
+
+
+
 
         function toggleSignupPasswordVisibility() {
             var passwordInput = document.getElementById("signupPassword");

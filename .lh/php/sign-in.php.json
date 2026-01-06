@@ -1,0 +1,22 @@
+{
+    "sourceFile": "php/sign-in.php",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 1,
+            "patches": [
+                {
+                    "date": 1767725796473,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1767726922984,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -2,45 +2,51 @@\n header('Content-Type: application/json');\r\n error_reporting(E_ALL);\r\n ini_set('display_errors', 1);\r\n \r\n-// Database connection\r\n+// DB connection\r\n $conn = new mysqli(\"localhost\", \"root\", \"\", \"ecommerce\");\r\n-if($conn->connect_error){\r\n+if ($conn->connect_error) {\r\n     echo json_encode([\"success\" => false, \"message\" => \"Database connection failed\"]);\r\n     exit;\r\n }\r\n \r\n-// Get POST data\r\n+// POST values\r\n $email = isset($_POST['email']) ? $conn->real_escape_string($_POST['email']) : '';\r\n $password = isset($_POST['password']) ? $_POST['password'] : '';\r\n \r\n-if(!$email || !$password){\r\n+if (!$email || !$password) {\r\n     echo json_encode([\"success\" => false, \"message\" => \"Email and password are required\"]);\r\n     exit;\r\n }\r\n \r\n-// Check user credentials\r\n+// Query user\r\n $sql = \"SELECT ID, Username, Email, Password FROM users WHERE Email='$email' LIMIT 1\";\r\n $result = $conn->query($sql);\r\n \r\n-if($result && $result->num_rows > 0){\r\n+if ($result && $result->num_rows > 0) {\r\n+\r\n     $user = $result->fetch_assoc();\r\n+    $hashedPassword = $user['Password'];\r\n \r\n-    // For now, assuming password is stored in plaintext\r\n-    if($password === $user['Password']){\r\n+    // ⭐ VERY IMPORTANT: verify hashed password\r\n+    if (password_verify($password, $hashedPassword)) {\r\n+\r\n         echo json_encode([\r\n             \"success\" => true,\r\n             \"data\" => [\r\n                 \"ID\" => $user['ID'],\r\n                 \"Username\" => $user['Username']\r\n             ]\r\n         ]);\r\n+\r\n     } else {\r\n-        echo json_encode([\"success\" => false, \"message\" => \"Invalid password\"]);\r\n+\r\n+        echo json_encode([\"success\" => false, \"message\" => \"Incorrect password\"]);\r\n     }\r\n+\r\n } else {\r\n-    echo json_encode([\"success\" => false, \"message\" => \"User not found\"]);\r\n+    echo json_encode([\"success\" => false, \"message\" => \"Account not found\"]);\r\n }\r\n \r\n $conn->close();\r\n ?>\r\n"
+                }
+            ],
+            "date": 1767725796473,
+            "name": "Commit-0",
+            "content": "<?php\r\nheader('Content-Type: application/json');\r\nerror_reporting(E_ALL);\r\nini_set('display_errors', 1);\r\n\r\n// Database connection\r\n$conn = new mysqli(\"localhost\", \"root\", \"\", \"ecommerce\");\r\nif($conn->connect_error){\r\n    echo json_encode([\"success\" => false, \"message\" => \"Database connection failed\"]);\r\n    exit;\r\n}\r\n\r\n// Get POST data\r\n$email = isset($_POST['email']) ? $conn->real_escape_string($_POST['email']) : '';\r\n$password = isset($_POST['password']) ? $_POST['password'] : '';\r\n\r\nif(!$email || !$password){\r\n    echo json_encode([\"success\" => false, \"message\" => \"Email and password are required\"]);\r\n    exit;\r\n}\r\n\r\n// Check user credentials\r\n$sql = \"SELECT ID, Username, Email, Password FROM users WHERE Email='$email' LIMIT 1\";\r\n$result = $conn->query($sql);\r\n\r\nif($result && $result->num_rows > 0){\r\n    $user = $result->fetch_assoc();\r\n\r\n    // For now, assuming password is stored in plaintext\r\n    if($password === $user['Password']){\r\n        echo json_encode([\r\n            \"success\" => true,\r\n            \"data\" => [\r\n                \"ID\" => $user['ID'],\r\n                \"Username\" => $user['Username']\r\n            ]\r\n        ]);\r\n    } else {\r\n        echo json_encode([\"success\" => false, \"message\" => \"Invalid password\"]);\r\n    }\r\n} else {\r\n    echo json_encode([\"success\" => false, \"message\" => \"User not found\"]);\r\n}\r\n\r\n$conn->close();\r\n?>\r\n"
+        }
+    ]
+}

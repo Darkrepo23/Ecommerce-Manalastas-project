@@ -287,18 +287,16 @@
                                 height="30">
                         </a>
                     </li>
-                    <button class="btn btn-primary" onclick="location.href='login.html'">Don't have an account? <span
-                            class="text-decoration-underline">Sign
+                    <button class="btn btn-primary" id="account?" onclick="location.href='login.html'">Don't have an
+                        account? <span class="text-decoration-underline">Sign
                             Up</span></button>
-                    <div class="dropdown ms-lg-3 d-none">
+                    <div class="dropdown ms-lg-3 d-none" id="profile">
                         <button class="btn btn-secondary dropdown-toggle" type="button" id="profileDropdown"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             My Profile
                         </button>
                         <div class="dropdown-menu" aria-labelledby="profileDropdown">
-                            <a class="dropdown-item" href="#">View Profile</a>
-                            <a class="dropdown-item" href="#">Edit Profile</a>
-                            <a class="dropdown-item" href="#">Settings</a>
+                            <a class="dropdown-item" href="profile-settings.html">Edit Profile</a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="#">Logout</a>
                         </div>
@@ -540,6 +538,33 @@
         loadProducts();
 
         console.log(JSON.parse(localStorage.getItem('selectedProduct')));
+        console.log(JSON.parse(localStorage.getItem('currentUser')));
+
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+
+            if (currentUser) {
+                // Hide the login/account button
+                const accountEl = document.getElementById("account?");
+                if (accountEl) accountEl.classList.add("d-none");
+
+                // Show the profile dropdown
+                const profileEl = document.getElementById("profile");
+                if (profileEl) profileEl.classList.remove("d-none");
+            }
+
+
+            if (currentUser) {
+                // Change "My Profile" button text to the username
+                const profileBtn = document.getElementById("profileDropdown");
+                if (profileBtn) profileBtn.textContent = currentUser.username;
+            }
+        });
+
+
+
+
 
 
 
