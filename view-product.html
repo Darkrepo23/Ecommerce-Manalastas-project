@@ -404,38 +404,25 @@
             <!-- Product Images -->
             <div class="col-md-5">
                 <img id="mainImage"
-                    src="https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=600&h=600&fit=crop"
+                    src=""
                     alt="Vivo Y19s" class="product-image mb-3">
-                <div class="d-flex">
-                    <img src="https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=150&h=150&fit=crop"
-                        alt="Thumbnail 1" class="thumbnail" onclick="changeImage(this.src)">
-                    <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=150&h=150&fit=crop"
-                        alt="Thumbnail 2" class="thumbnail" onclick="changeImage(this.src)">
-                    <img src="https://images.unsplash.com/photo-1585060544812-6b45742d762f?w=150&h=150&fit=crop"
-                        alt="Thumbnail 3" class="thumbnail" onclick="changeImage(this.src)">
-                    <img src="https://images.unsplash.com/photo-1605236453806-6ff36851218e?w=150&h=150&fit=crop"
-                        alt="Thumbnail 4" class="thumbnail" onclick="changeImage(this.src)">
-                    <img src="https://images.unsplash.com/photo-1605236453806-6ff36851218e?w=150&h=150&fit=crop"
-                        alt="Thumbnail 4" class="thumbnail" onclick="changeImage(this.src)">
-
-                </div>
             </div>
 
             <!-- Product Details -->
             <div class="col-md-7">
                 <div class="d-flex justify-content-between align-items-start">
                     <div>
-                        <h1 class="mb-3">Vivo Y19s</h1>
+                        <h1 class="mb-3" id="prodname">Vivo Y19s</h1>
                         <p class="text-muted">Or 6 months for only ₱1,000 at 0% interest with <a href="#">Learn
                                 More</a>.</p>
-                        <p>5500mAh 15W Fast Charge | IP64 Dust and Water Resistance | 50MP Night AI Camera | AI Photo
+                        <p id="description">5500mAh 15W Fast Charge | IP64 Dust and Water Resistance | 50MP Night AI Camera | AI Photo
                             Enhance | Dynamic Light System | SGS Five-Star Drop Resistance and Military-Grade
                             Certification | 300% Volume Dual-Stereo Speaker and Audio Booster | 256GB ROM Up to 1TB
                             Expandable Storage</p>
 
-                        <div class="stars mb-3">★ ★ ★  ★</div>
+                        <div class="stars mb-3" id="ratings">★ ★ ★  ★</div>
 
-                        <div class="stock-info">209 Sold // 48 Stocks</div>
+                        <div class="stock-info"><span id="sold">209</span> Sold // <span id="stocks">48</span> Stocks</div>
 
                         <div class="quantity-control">
                             <label>Quantity</label>
@@ -499,6 +486,53 @@
                 input.value = parseInt(input.value) - 1;
             }
         }
+
+
+async function loadSelectedProduct() {
+    const stored = localStorage.getItem('selectedProduct');
+    if (!stored) return;
+
+    const { productName, price } = JSON.parse(stored);
+
+    try {
+        const res = await fetch('php/view-products.php', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ productName, price })
+        });
+
+        const data = await res.json();
+
+        if (!data.success) {
+            console.error(data.message);
+            return;
+        }
+
+        const prod = data.product;
+
+        // Fill HTML
+        document.getElementById('prodname').textContent = prod['Product Name'];
+        document.getElementById('description').textContent = prod['Description'];
+        document.getElementById('sold').textContent = prod.Sold;
+        document.getElementById('stocks').textContent = prod.Stock;
+
+        let stars = '';
+        for (let i = 1; i <= 5; i++) {
+            stars += i <= prod.Ratings ? '★ ' : '☆ ';
+        }
+        document.getElementById('ratings').textContent = stars.trim();
+
+        document.getElementById('mainImage').src = prod.productImg || 'https://via.placeholder.com/400';
+
+    } catch (err) {
+        console.error("Error loading selected product:", err);
+    }
+}
+
+loadSelectedProduct();
+
+
+
     </script>
 </body>
 

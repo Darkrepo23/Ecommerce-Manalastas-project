@@ -185,7 +185,8 @@
                         <tr>
                             <th>Product Name</th>
                             <th>Specs Description</th>
-                            <th>Rate</th>
+                            <th>Price</th>
+                            <th>Rate</th> <!-- Added Price header -->
                             <th>Stock</th>
                             <th>Sold</th>
                             <th>Actions</th>
@@ -197,6 +198,7 @@
                             <td>Product A</td>
                             <td>High quality, durable</td>
                             <td>₱500</td>
+                            <td>₱1500</td> <!-- Added Price cell -->
                             <td>120</td>
                             <td>50</td>
                             <td>
@@ -208,6 +210,7 @@
                             <td>Product B</td>
                             <td>Compact and lightweight</td>
                             <td>₱300</td>
+                            <td>₱900</td> <!-- Added Price cell -->
                             <td>80</td>
                             <td>30</td>
                             <td>
@@ -243,6 +246,12 @@
                                 <label for="productName" class="form-label">Product Name</label>
                                 <input type="text" class="form-control" id="productName" name="productName"
                                     placeholder="Enter product name" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="Price" class="form-label">Price</label>
+                                <input type="number" class="form-control" id="price" name="price"
+                                    placeholder="Enter price " required>
                             </div>
 
                             <!-- Specs Description -->
@@ -333,6 +342,7 @@
                         tr.innerHTML = `
                     <td>${product['Product Name']}</td>
                     <td>${product['Description']}</td>
+                    <td>${product['Price']}</td>
                     <td>${product['Ratings']}</td>
                     <td>${product['Stock']}</td>
                     <td>${product['Sold']}</td>
@@ -381,6 +391,7 @@
             document.getElementById('productName').value = product['Product Name'];
             document.getElementById('specsDescription').value = product['Description'];
             document.getElementById('stock').value = product['Stock'];
+            document.getElementById('price').value = product['Price']; // Added price
 
             // Select the correct rating radio button
             const rateRadio = document.querySelector(`input[name="rate"][value="${product['Ratings']}"]`);
@@ -388,9 +399,18 @@
                 rateRadio.checked = true;
             }
 
+            // Show current product image (optional preview)
+            const imgPreview = document.getElementById('currentProductImg');
+            if (imgPreview) {
+                imgPreview.src = product['Product Img'] || '';
+                imgPreview.style.display = product['Product Img'] ? 'block' : 'none';
+            }
+
             // Store original product name for updating
-            document.getElementById('addProductForm').dataset.originalName = product['Product Name'];
-            document.getElementById('addProductForm').dataset.editMode = 'true';
+            const form = document.getElementById('addProductForm');
+            form.dataset.originalName = product['Product Name'];
+            form.dataset.editMode = 'true';
+            form.dataset.currentImg = product['Product Img'] || ''; // store current image path
 
             // Change modal title and button text
             document.getElementById('addProductModalLabel').textContent = 'Edit Product';
@@ -400,6 +420,7 @@
             const modal = new bootstrap.Modal(document.getElementById('addProductModal'));
             modal.show();
         }
+
 
         // Load products on page load
         document.addEventListener("DOMContentLoaded", function () {

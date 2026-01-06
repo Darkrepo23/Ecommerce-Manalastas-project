@@ -119,9 +119,11 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
             }
         }
         
+        $price = floatval($_POST['price'] ?? 0); // <- NEW
         // Update database
-        $updateStmt = $conn->prepare("UPDATE products SET `Product Name`=?, `Description`=?, `Ratings`=?, `Stock`=?, `Product Img`=? WHERE `Product Name`=?");
-        $updateStmt->bind_param("ssiiss", $productName, $specsDescription, $rate, $stock, $productImg, $originalName);
+    $updateStmt = $conn->prepare("UPDATE products SET `Product Name`=?, `Description`=?, `Ratings`=?, `Stock`=?, `Price`=?, `Product Img`=? WHERE `Product Name`=?");
+    $updateStmt->bind_param("ssiidss", $productName, $specsDescription, $rate, $stock, $price, $productImg, $originalName);
+
         
         if($updateStmt->execute()){
             echo json_encode(['success'=>true, 'message'=>'Product updated successfully!']);
@@ -139,6 +141,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     $specsDescription = $_POST['specsDescription'] ?? '';
     $rate = intval($_POST['rate'] ?? 0);
     $stock = intval($_POST['stock'] ?? 0);
+    $price = floatval($_POST['price'] ?? 0); // <- NEW
     $sold = 0;
     $addingDate = date('Y-m-d H:i:s');
 
@@ -160,8 +163,9 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     }
 
     // Use prepared statement to prevent SQL injection
-    $stmt = $conn->prepare("INSERT INTO products (`Product Name`, `Description`, `Ratings`, `Stock`, `Sold`, `Product Img`, `Adding Date`) VALUES (?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("ssiisss", $productName, $specsDescription, $rate, $stock, $sold, $productImg, $addingDate);
+    $stmt = $conn->prepare("INSERT INTO products (`Product Name`, `Description`, `Ratings`, `Stock`, `Sold`, `Price`, `Product Img`, `Adding Date`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("ssiidsss", $productName, $specsDescription, $rate, $stock, $sold, $price, $productImg, $addingDate);
+
 
     if($stmt->execute()){
         echo json_encode([
@@ -171,6 +175,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
             'specsDescription'=>$specsDescription,
             'rate'=>$rate,
             'stock'=>$stock,
+             'price'=>$price, // <- NEW
             'sold'=>$sold,
             'productImg'=>$productImg,
             'addingDate'=>$addingDate
@@ -185,7 +190,10 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
 // Handle GET request - Fetch all products
 elseif($_SERVER['REQUEST_METHOD'] === 'GET'){
-    $sql = "SELECT `Product Name`, `Description`, `Ratings`, `Stock`, `Sold`, `Product Img`, `Adding Date` FROM `products` ORDER BY `Adding Date` DESC";
+    // Added `Price` to SELECT
+    $sql = "SELECT `Product Name`, `Description`, `Price`, `Ratings`, `Stock`, `Sold`, `Product Img`, `Adding Date` 
+            FROM `products` 
+            ORDER BY `Adding Date` DESC";
     $result = $conn->query($sql);
 
     $products = [];
@@ -205,4 +213,5 @@ else {
     echo json_encode(['success'=>false, 'message'=>'Invalid request method']);
     $conn->close();
 }
+
 ?>
