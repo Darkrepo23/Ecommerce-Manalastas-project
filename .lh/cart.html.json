@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 82,
+            "activePatchIndex": 83,
             "patches": [
                 {
                     "date": 1765374729552,
@@ -336,6 +336,10 @@
                 {
                     "date": 1767687511744,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -661,9 +661,9 @@\n         </div>\r\n \r\n         <div class=\"row mt-4\">\r\n             <!-- Products List -->\r\n-            <div class=\"col-lg-8 overflow-auto product h-sm\" style=\"height: 30vw;\">\r\n+            <div class=\"col-lg-8 overflow-auto product h-sm-\" style=\"height: 30vw;\">\r\n                 <!-- Cart Item -->\r\n                 <div class=\"product-card\" id=\"cartItem\">\r\n                     <div class=\"product-content\">\r\n                         <div class=\"product-image-wrapper\">\r\n"
+                },
+                {
+                    "date": 1767729669740,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -675,9 +675,9 @@\n                                 alt=\"Inkjet Printer\" class=\"product-img\">\r\n                         </div>\r\n                         <div class=\"product-details\">\r\n                             <h5 class=\"mb-2\" id=\"prodName\">Inkjet Printer</h5>\r\n-                            <p class=\"text-muted small mb-2\" pr>Prints using liquid ink; great for photos and color\r\n+                            <p class=\"text-muted small mb-2\" pro>Prints using liquid ink; great for photos and color\r\n                                 documents.</p>\r\n                             <div class=\"price-info\">\r\n                                 <div class=\"fw-bold\">₱7,350.00</div>\r\n                                 <div class=\"text-muted small\">Total: ₱87,003.02</div>\r\n"
                 }
             ],
             "date": 1765374729552,

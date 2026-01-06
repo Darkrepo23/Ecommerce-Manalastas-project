@@ -563,8 +563,6 @@
                 width: 100%;
             }
         }
-
-
     </style>
 </head>
 
@@ -673,49 +671,16 @@
                 <div class="product-card" id="cartItem">
                     <div class="product-content">
                         <div class="product-image-wrapper">
-                            <img src="https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?w=400&h=400&fit=crop"
+                            <img id="prodImg" src="https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?w=400&h=400&fit=crop"
                                 alt="Inkjet Printer" class="product-img">
                         </div>
                         <div class="product-details">
-                            <h5 class="mb-2">Inkjet Printer</h5>
-                            <p class="text-muted small mb-2">Prints using liquid ink; great for photos and color
+                            <h5 class="mb-2" id="prodName">Inkjet Printer</h5>
+                            <p class="text-muted small mb-2" id="description">Prints using liquid ink; great for photos and color
                                 documents.</p>
                             <div class="price-info">
-                                <div class="fw-bold">₱7,350.00</div>
-                                <div class="text-muted small">Total: ₱87,003.02</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="product-actions">
-                        <div class="quantity-control">
-                            <button class="qty-btn" onclick="changeQty(-1)">
-                                <i class="bi bi-dash"></i>
-                            </button>
-                            <span id="qty" class="fw-bold">23</span>
-                            <button class="qty-btn" onclick="changeQty(1)">
-                                <i class="bi bi-plus"></i>
-                            </button>
-                        </div>
-                        <button class="remove-btn">
-                            <i class="bi bi-trash"></i>
-                            Remove
-                        </button>
-                    </div>
-                </div>
-
-                <div class="product-card" id="cartItem">
-                    <div class="product-content">
-                        <div class="product-image-wrapper">
-                            <img src="https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?w=400&h=400&fit=crop"
-                                alt="Inkjet Printer" class="product-img">
-                        </div>
-                        <div class="product-details">
-                            <h5 class="mb-2">Inkjet Printer</h5>
-                            <p class="text-muted small mb-2">Prints using liquid ink; great for photos and color
-                                documents.</p>
-                            <div class="price-info">
-                                <div class="fw-bold">₱7,350.00</div>
-                                <div class="text-muted small">Total: ₱87,003.02</div>
+                                <div class="fw-bold">₱<span id="price">7000</span>.00</div>
+                                <div class="text-muted small">Total: ₱7,000.00</div>
                             </div>
                         </div>
                     </div>
@@ -854,9 +819,11 @@
                                 <div class="col-md-6">
                                     <h4>Order Summary</h4>
                                     <ul class="list-group mb-4">
-                                        <li class="list-group-item d-flex flex-column justify-content-between align-items-center text-center">
+                                        <li
+                                            class="list-group-item d-flex flex-column justify-content-between align-items-center text-center">
                                             Merchandise Subtotal
-                                            <span class="badge badge-primary badge-pill " style="color: black;">₱199</span>
+                                            <span class="badge badge-primary badge-pill "
+                                                style="color: black;">₱199</span>
                                         </li>
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
                                             Quantity
@@ -865,7 +832,8 @@
                                         </li>
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
                                             Shipping Subtotal
-                                            <span class="badge badge-primary badge-pill" style="color: black;">₱50</span>
+                                            <span class="badge badge-primary badge-pill"
+                                                style="color: black;">₱50</span>
                                             <!-- Replace '₱50' with the actual shipping cost -->
                                         </li>
                                     </ul>
@@ -995,6 +963,34 @@
                 }
             });
         });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+
+            if (currentUser) {
+
+                // Hide login/account button
+                const accountEl = document.getElementById("account");
+                if (accountEl) accountEl.classList.add("d-none");
+
+                // Show the profile dropdown
+                const profileEl = document.getElementById("profile");
+                if (profileEl) profileEl.classList.remove("d-none");
+
+                // Change "My Profile" button to username
+                const profileBtn = document.getElementById("profileDropdown");
+                if (profileBtn) profileBtn.textContent = currentUser.username;
+
+                // Show cart item
+                const cartEl = document.getElementById("cartItem");
+                if (cartEl) cartEl.classList.remove("d-none");
+
+                // Hide alert banner
+                const alertBanner = document.querySelector(".alert-banner");
+                if (alertBanner) alertBanner.classList.add("d-none");
+            }
+        });
+
     </script>
 </body>
 

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 06, 2026 at 07:47 PM
+-- Generation Time: Jan 06, 2026 at 09:15 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -57,17 +57,18 @@ CREATE TABLE `users` (
   `Email` varchar(255) NOT NULL,
   `Password` varchar(255) NOT NULL,
   `ProfileImg` varchar(500) DEFAULT NULL,
-  `DateCreated` datetime NOT NULL DEFAULT current_timestamp()
+  `DateCreated` datetime NOT NULL DEFAULT current_timestamp(),
+  `Cart` varchar(200) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`ID`, `Username`, `Email`, `Password`, `ProfileImg`, `DateCreated`) VALUES
-(3, 'asdad', 'cosmarkgarcia@gmail.com', '$2y$10$Nxd3nH.pUWdEmTNaHprR5e855ZqhHJlSmrB3rXyVdt4LV97ELB/hy', '../uploads/users/user_695d2473d1c113.87862721.png', '2026-01-06 23:04:19'),
-(5, 'sdfsdf', 'vincentjames.manalastas@yahoo.com', '$2y$10$RVCnhuQlyxUl0j46hPXRU.cSxiilkYPS0/rx1nTi7eY3xJbtAPaFO', '../uploads/users/user_695d279b8b3ff6.63251455.png', '2026-01-06 23:17:47'),
-(6, 'cosmark', 'cosmarkmanalastas@gmail.com', '$2y$10$eYbDVbNIpzJu54LNoYdTOeM2fQp/7GfHfybcF.myX0EvfVofpRc6C', NULL, '2026-01-07 02:12:10');
+INSERT INTO `users` (`ID`, `Username`, `Email`, `Password`, `ProfileImg`, `DateCreated`, `Cart`) VALUES
+(3, 'asdad', 'cosmarkgarcia@gmail.com', '$2y$10$Nxd3nH.pUWdEmTNaHprR5e855ZqhHJlSmrB3rXyVdt4LV97ELB/hy', '../uploads/users/user_695d2473d1c113.87862721.png', '2026-01-06 23:04:19', ''),
+(5, 'sdfsdf', 'vincentjames.manalastas@yahoo.com', '$2y$10$RVCnhuQlyxUl0j46hPXRU.cSxiilkYPS0/rx1nTi7eY3xJbtAPaFO', '../uploads/users/user_695d279b8b3ff6.63251455.png', '2026-01-06 23:17:47', ''),
+(7, 'vincent', 'vincentmanalastas827@gmail.com', '$2y$10$nDFbpd9xBOXuc1fPWTseIeIfTD1LoYzxNTFsZrbt0Wr4.k.JEjfN2', NULL, '2026-01-07 03:10:03', '');
 
 --
 -- Indexes for dumped tables
@@ -89,7 +90,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
