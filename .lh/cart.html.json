@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 79,
+            "activePatchIndex": 82,
             "patches": [
                 {
                     "date": 1765374729552,
@@ -324,6 +324,18 @@
                 {
                     "date": 1767686278317,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -847,9 +847,9 @@\n                             <div class=\"row\">\r\n                                 <div class=\"col-md-6\">\r\n                                     <h4>Order Summary</h4>\r\n                                     <ul class=\"list-group mb-4\">\r\n-                                        <li class=\"list-group-item d-flex flex-column justify-content-between align-items-center\">\r\n+                                        <li class=\"list-group-item d-flex flex-column justify-content-between align-items-center text\">\r\n                                             Merchandise Subtotal\r\n                                             <span class=\"badge badge-primary badge-pill \" style=\"color: black;\">₱199</span>\r\n                                         </li>\r\n                                         <li class=\"list-group-item d-flex justify-content-between align-items-center\">\r\n"
+                },
+                {
+                    "date": 1767687486130,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -661,9 +661,9 @@\n         </div>\r\n \r\n         <div class=\"row mt-4\">\r\n             <!-- Products List -->\r\n-            <div class=\"col-lg-8 overflow-auto\" style=\"height: 30vw;\">\r\n+            <div class=\"col-lg-8 overflow-auto product\" style=\"height: 30vw;\">\r\n                 <!-- Cart Item -->\r\n                 <div class=\"product-card\" id=\"cartItem\">\r\n                     <div class=\"product-content\">\r\n                         <div class=\"product-image-wrapper\">\r\n@@ -847,9 +847,9 @@\n                             <div class=\"row\">\r\n                                 <div class=\"col-md-6\">\r\n                                     <h4>Order Summary</h4>\r\n                                     <ul class=\"list-group mb-4\">\r\n-                                        <li class=\"list-group-item d-flex flex-column justify-content-between align-items-center text\">\r\n+                                        <li class=\"list-group-item d-flex flex-column justify-content-between align-items-center text-center\">\r\n                                             Merchandise Subtotal\r\n                                             <span class=\"badge badge-primary badge-pill \" style=\"color: black;\">₱199</span>\r\n                                         </li>\r\n                                         <li class=\"list-group-item d-flex justify-content-between align-items-center\">\r\n"
+                },
+                {
+                    "date": 1767687502913,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -661,9 +661,9 @@\n         </div>\r\n \r\n         <div class=\"row mt-4\">\r\n             <!-- Products List -->\r\n-            <div class=\"col-lg-8 overflow-auto product\" style=\"height: 30vw;\">\r\n+            <div class=\"col-lg-8 overflow-auto product \" style=\"height: 30vw;\">\r\n                 <!-- Cart Item -->\r\n                 <div class=\"product-card\" id=\"cartItem\">\r\n                     <div class=\"product-content\">\r\n                         <div class=\"product-image-wrapper\">\r\n"
+                },
+                {
+                    "date": 1767687511744,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -661,9 +661,9 @@\n         </div>\r\n \r\n         <div class=\"row mt-4\">\r\n             <!-- Products List -->\r\n-            <div class=\"col-lg-8 overflow-auto product h-sm\" style=\"height: 30vw;\">\r\n+            <div class=\"col-lg-8 overflow-auto product h-sm-\" style=\"height: 30vw;\">\r\n                 <!-- Cart Item -->\r\n                 <div class=\"product-card\" id=\"cartItem\">\r\n                     <div class=\"product-content\">\r\n                         <div class=\"product-image-wrapper\">\r\n"
                 }
             ],
             "date": 1765374729552,
