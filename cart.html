@@ -7,6 +7,7 @@
     <title>Shopping Cart - TechHub</title>
     <link rel="stylesheet" href="css/nav.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <style>
         .search-input {
@@ -30,6 +31,13 @@
             transition: all 0.3s ease;
             border: none;
         }
+
+        .cart-checkbox {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
 
         .btn-login:hover {
             background-color: var(--dark-blue);
@@ -82,6 +90,27 @@
             color: #333;
             cursor: pointer;
             transition: all 0.3s ease;
+        }
+
+        .cart-item {
+            border-bottom: 1px solid #dee2e6;
+            padding: 15px 0;
+        }
+
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+
+        #prodimg {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .checkout-panel {
+            max-height: 600px;
+            overflow-y: auto;
         }
 
         .back-btn:hover {
@@ -616,256 +645,125 @@
         </div>
     </div>
 
-    <!-- Main Content -->
-    <div class="container my-4">
-        <div class="row">
-            <div class="col-12">
-                <button class="back-btn" onclick="window.history.back()">
-                    <i class="bi bi-arrow-left"></i>
-                </button>
+    <div class="container my-5">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">Shopping Cart</h4>
+            </div>
+            <div class="card-body checkout-panel" id="cards">
+                <!-- Cart Item Template -->
+                <!-- Checkout Modal -->
+
+
+                <!-- Additional cart items will be dynamically added here -->
+            </div>
+            <div class="card-footer">
+                <div class="row align-items-center">
+                    <div class="col-6">
+                        <h5 class="mb-0">Total:</h5>
+                    </div>
+                    <div class="col-6 text-end">
+                        <h4 class="mb-0 text-primary" id="total">$0.00</h4>
+                    </div>
+                </div>
+                <button class="btn btn-success w-100 mt-3" id="checkout">Proceed to Checkout</button>
             </div>
         </div>
-
-        <!-- Order Status Tabs -->
-        <div class="row mt-4">
-            <div class="col-12">
-                <div class="status-tabs">
-                    <button class="status-tab active" data-status="cart">
-                        <i class="bi bi-cart-check-fill"></i>
-                        <span>Cart</span>
-                        <span class="badge bg-light text-dark">1</span>
-                    </button>
-                    <button class="status-tab" data-status="pending">
-                        <i class="bi bi-clock-fill"></i>
-                        <span>Pending</span>
-                        <span class="badge bg-light text-dark">0</span>
-                    </button>
-                    <button class="status-tab" data-status="shipping">
-                        <i class="bi bi-truck"></i>
-                        <span>Shipping</span>
-                        <span class="badge bg-light text-dark">1</span>
-                    </button>
-                    <button class="status-tab" data-status="delivered">
-                        <i class="bi bi-check-circle-fill"></i>
-                        <span>Delivered</span>
-                        <span class="badge bg-light text-dark">3</span>
-                    </button>
-                    <button class="status-tab" data-status="cancel">
-                        <i class="bi bi-x-circle-fill"></i>
-                        <span>Cancel</span>
-                        <span class="badge bg-light text-dark">0</span>
-                    </button>
-                    <button class="status-tab" data-status="refund">
-                        <i class="bi bi-arrow-counterclockwise"></i>
-                        <span>Refund</span>
-                        <span class="badge bg-light text-dark">1</span>
-                    </button>
+    </div>
+    <div class="modal fade" id="checkoutModal" tabindex="-1" aria-labelledby="checkoutModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="checkoutModalLabel">Checkout</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-            </div>
-        </div>
-
-        <div class="row mt-4">
-            <!-- Products List -->
-            <div class="col-lg-8 overflow-auto product" style="height: 30vw;">
-                <!-- Cart Item -->
-                <div class="product-card" id="cartItem">
-                    <div class="product-content">
-                        <div class="product-image-wrapper">
-                            <img id="prodImg" src="https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?w=400&h=400&fit=crop"
-                                alt="Inkjet Printer" class="product-img">
+                <div class="modal-body">
+                    <form id="checkoutForm">
+                        <!-- Full name -->
+                        <div class="mb-3">
+                            <label for="fullname" class="form-label">Full Name</label>
+                            <input type="text" class="form-control" id="fullname" required>
                         </div>
-                        <div class="product-details">
-                            <h5 class="mb-2" id="prodName">Inkjet Printer</h5>
-                            <p class="text-muted small mb-2" id="description">Prints using liquid ink; great for photos and color
-                                documents.</p>
-                            <div class="price-info">
-                                <div class="fw-bold">₱<span id="price">7000</span>.00</div>
-                                <div class="text-muted small">Total: ₱7,000.00</div>
+                        <!-- Phone -->
+                        <div class="mb-3">
+                            <label for="phone" class="form-label">Phone Number (63+)</label>
+                            <input type="tel" class="form-control" id="phone" required pattern="\d{10,12}">
+                        </div>
+                        <!-- Postal -->
+                        <div class="mb-3">
+                            <label for="postal" class="form-label">Postal Code</label>
+                            <input type="text" class="form-control" id="postal" required>
+                        </div>
+                        <!-- Address -->
+                        <div class="mb-3">
+                            <label for="address" class="form-label">Address (Street, Building, House
+                                No.)</label>
+                            <input type="text" class="form-control" id="address" required>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col">
+                                <label for="region" class="form-label">Region</label>
+                                <input type="text" class="form-control" id="region" required>
+                            </div>
+                            <div class="col">
+                                <label for="province" class="form-label">Province</label>
+                                <input type="text" class="form-control" id="province" required>
                             </div>
                         </div>
-                    </div>
-                    <div class="product-actions">
-                        <div class="quantity-control">
-                            <button class="qty-btn" onclick="changeQty(-1)">
-                                <i class="bi bi-dash"></i>
-                            </button>
-                            <span id="qty" class="fw-bold">23</span>
-                            <button class="qty-btn" onclick="changeQty(1)">
-                                <i class="bi bi-plus"></i>
-                            </button>
-                        </div>
-                        <button class="remove-btn">
-                            <i class="bi bi-trash"></i>
-                            Remove
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Pending/Shipping Item -->
-                <div class="product-card" id="shippingItem" style="display: none;">
-                    <div class="product-content">
-                        <div class="product-image-wrapper">
-                            <img src="https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=400&h=400&fit=crop"
-                                alt="Wireless Mouse" class="product-img">
-                        </div>
-                        <div class="product-details">
-                            <h5 class="mb-2">Wireless Mouse</h5>
-                            <p class="text-muted small mb-2">Ergonomic design with precision tracking.</p>
-                            <div class="price-info">
-                                <div class="fw-bold">₱1,250.00</div>
-                                <div class="text-muted small">Quantity: 2</div>
+                        <div class="row mb-3">
+                            <div class="col">
+                                <label for="city" class="form-label">City</label>
+                                <input type="text" class="form-control" id="city" required>
+                            </div>
+                            <div class="col">
+                                <label for="barangay" class="form-label">Barangay</label>
+                                <input type="text" class="form-control" id="barangay" required>
                             </div>
                         </div>
-                    </div>
-                    <div class="product-actions">
-                        <div class="text-muted small">
-                            <i class="bi bi-truck me-2"></i>Order is being processed
-                        </div>
-                        <button class="cancel-btn">
-                            <i class="bi bi-x-circle"></i>
-                            Cancel Order
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Delivered Item -->
-                <div class="product-card" id="deliveredItem" style="display: none;">
-                    <div class="product-content">
-                        <div class="product-image-wrapper">
-                            <img src="https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=400&h=400&fit=crop"
-                                alt="Mechanical Keyboard" class="product-img">
-                        </div>
-                        <div class="product-details">
-                            <h5 class="mb-2">Mechanical Keyboard</h5>
-                            <p class="text-muted small mb-2">RGB backlit with blue switches.</p>
-                            <div class="price-info">
-                                <div class="fw-bold">₱3,500.00</div>
-                                <div class="text-muted small">Delivered on Dec 5, 2025</div>
+                        <!-- Address type -->
+                        <div class="mb-3">
+                            <label class="form-label">Address Type</label><br>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="addressType" id="home" value="Home"
+                                    checked>
+                                <label class="form-check-label" for="home">Home</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="addressType" id="work" value="Work">
+                                <label class="form-check-label" for="work">Work</label>
                             </div>
                         </div>
-                    </div>
-                    <div class="product-actions">
-                        <div class="text-success">
-                            <i class="bi bi-check-circle-fill me-2"></i>Successfully delivered
+                        <!-- Payment option -->
+                        <div class="mb-3">
+                            <label class="form-label">Payment Option</label>
+                            <select class="form-select" id="paymentOption" required>
+                                <option value="Paypal">Paypal</option>
+                                <option value="Cash on delivery">Cash on delivery</option>
+                            </select>
                         </div>
-                        <button class="refund-btn">
-                            <i class="bi bi-arrow-counterclockwise"></i>
-                            Request Refund
-                        </button>
-                    </div>
+                    </form>
                 </div>
-
-                <!-- Cancelled Item -->
-                <div class="product-card" id="cancelledItem" style="display: none;">
-                    <div class="product-content">
-                        <div class="product-image-wrapper">
-                            <img src="https://images.unsplash.com/photo-1625948515291-69613efd103f?w=400&h=400&fit=crop"
-                                alt="USB Cable" class="product-img">
-                        </div>
-                        <div class="product-details">
-                            <h5 class="mb-2">USB-C Cable</h5>
-                            <p class="text-muted small mb-2">Fast charging cable, 2 meters.</p>
-                            <div class="price-info">
-                                <div class="fw-bold">₱450.00</div>
-                                <div class="text-danger small">Cancelled on Dec 3, 2025</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="product-actions">
-                        <div class="text-danger">
-                            <i class="bi bi-x-circle-fill me-2"></i>Order cancelled
-                        </div>
-                        <button class="view-btn">
-                            <i class="bi bi-eye"></i>
-                            View Products
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Refund Item -->
-                <div class="product-card" id="refundItem" style="display: none;">
-                    <div class="product-content">
-                        <div class="product-image-wrapper">
-                            <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=400&fit=crop"
-                                alt="Headphones" class="product-img">
-                        </div>
-                        <div class="product-details">
-                            <h5 class="mb-2">Wireless Headphones</h5>
-                            <p class="text-muted small mb-2">Noise cancelling with 30-hour battery.</p>
-                            <div class="price-info">
-                                <div class="fw-bold">₱5,800.00</div>
-                                <div class="text-info small">Refund in progress</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="product-actions">
-                        <div class="text-info">
-                            <i class="bi bi-arrow-counterclockwise me-2"></i>Refund processing (3-5 business days)
-                        </div>
-                        <button class="view-btn">
-                            <i class="bi bi-receipt"></i>
-                            View Details
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Checkout Section -->
-            <div class="col-lg-4">
-                <div class="checkout-section">
-                    <div class="mb-3">
-                        <div class="form-check">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <h4>Order Summary</h4>
-                                    <ul class="list-group mb-4">
-                                        <li
-                                            class="list-group-item d-flex flex-column justify-content-between align-items-center text-center">
-                                            Merchandise Subtotal
-                                            <span class="badge badge-primary badge-pill "
-                                                style="color: black;">₱199</span>
-                                        </li>
-                                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                                            Quantity
-                                            <span class="badge badge-primary badge-pill" style="color: black;">1</span>
-                                            <!-- Replace '1' with the actual quantity -->
-                                        </li>
-                                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                                            Shipping Subtotal
-                                            <span class="badge badge-primary badge-pill"
-                                                style="color: black;">₱50</span>
-                                            <!-- Replace '₱50' with the actual shipping cost -->
-                                        </li>
-                                    </ul>
-                                </div>
-
-                                <div class="col-md-6 mb-5">
-                                    <h4>Payment Option</h4>
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <p class="card-text"><strong>Cash on Delivery</strong></p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <input class="form-check-input custom-checkbox" type="checkbox" id="terms" checked>
-                            <label class="form-check-label" for="terms">
-                                Agree to <a href="#" style="color: var(--primary-blue);">Terms and Conditions</a>
-                            </label>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="d-flex justify-content-between mb-3">
-                        <h5>Total:</h5>
-                        <h5 class="fw-bold">87,003.02</h5>
-                    </div>
-                    <button class="btn-checkout">
-                        <i class="bi bi-credit-card me-2"></i>Checkout
-                    </button>
+                <div class="modal-footer">
+                    <button type="button" id="modalCheckoutBtn" class="btn btn-primary">Checkout</button>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Success Modal -->
+    <div class="modal fade" id="successModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content text-center p-3">
+                <h5>✅ Your package is being processed!</h5>
+                <p>We are packaging your selected items and preparing them for delivery.</p>
+                <button type="button" class="btn btn-success mt-2" data-bs-dismiss="modal">OK</button>
+            </div>
+        </div>
+    </div>
+
+
+
+
 
     <!-- Footer -->
     <footer class="footer">
@@ -898,71 +796,92 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        let quantity = 23;
+        window.addEventListener("load", () => {
+            const checkoutBtn = document.getElementById("checkout");
+            const modalCheckoutBtn = document.getElementById("modalCheckoutBtn");
+            const totalEl = document.getElementById("total");
 
-        function changeQty(delta) {
-            quantity = Math.max(1, quantity + delta);
-            document.getElementById('qty').textContent = quantity;
+            if (!checkoutBtn || !modalCheckoutBtn) return console.error("Checkout button(s) not found!");
 
-            // Animate the quantity change
-            const qtyElement = document.getElementById('qty');
-            qtyElement.style.transform = 'scale(1.3)';
-            qtyElement.style.color = 'var(--primary-blue)';
-            setTimeout(() => {
-                qtyElement.style.transform = 'scale(1)';
-                qtyElement.style.color = '';
-            }, 200);
-        }
+            // Enable/disable buttons based on total
+            function updateCheckoutButtons() {
+                if (!totalEl) return;
+                const totalValue = parseFloat(totalEl.textContent.replace(/[₱,$]/g, "")) || 0;
+                const enable = totalValue > 0;
+                checkoutBtn.disabled = !enable;
+                modalCheckoutBtn.disabled = !enable;
+                console.log(`Checkout buttons ${enable ? "enabled" : "disabled"} (total: ₱${totalValue.toFixed(2)})`);
+            }
+            updateCheckoutButtons();
 
-        // Status tab switching
-        document.querySelectorAll('.status-tab').forEach(tab => {
-            tab.addEventListener('click', function () {
-                document.querySelectorAll('.status-tab').forEach(t => t.classList.remove('active'));
-                this.classList.add('active');
+            // Show checkout modal
+            checkoutBtn.addEventListener("click", () => {
+                const modalEl = document.getElementById("checkoutModal");
+                if (!modalEl) return console.error("Checkout modal not found!");
+                bootstrap.Modal.getOrCreateInstance(modalEl).show();
+            });
 
-                const status = this.getAttribute('data-status');
+            // Handle modal checkout
+            modalCheckoutBtn.addEventListener("click", () => {
+                const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+                if (!currentUser) return;
 
-                // Hide all items
-                document.getElementById('cartItem').style.display = 'none';
-                document.getElementById('shippingItem').style.display = 'none';
-                document.getElementById('deliveredItem').style.display = 'none';
-                document.getElementById('cancelledItem').style.display = 'none';
-                document.getElementById('refundItem').style.display = 'none';
+                // Get checked items
+                const checkedItems = Array.from(document.querySelectorAll(".cart-checkbox"))
+                    .filter(cb => cb.checked)
+                    .map(cb => cb.closest(".cart-item").querySelector("#prodName").textContent);
 
-                // Show relevant items based on status
-                switch (status) {
-                    case 'cart':
-                        document.getElementById('cartItem').style.display = 'block';
-                        break;
-                    case 'pending':
-                        document.getElementById('shippingItem').style.display = 'block';
-                        break;
-                    case 'shipping':
-                        document.getElementById('shippingItem').style.display = 'block';
-                        break;
-                    case 'delivered':
-                        document.getElementById('deliveredItem').style.display = 'block';
-                        break;
-                    case 'cancel':
-                        document.getElementById('cancelledItem').style.display = 'block';
-                        break;
-                    case 'refund':
-                        document.getElementById('refundItem').style.display = 'block';
-                        break;
+                if (checkedItems.length === 0) {
+                    alert("Please select at least one item to checkout.");
+                    return;
                 }
+
+                // Form data
+                const checkoutForm = document.getElementById("checkoutForm");
+                const formData = new FormData(checkoutForm);
+                formData.append("user_id", currentUser.id);
+                formData.append("items", JSON.stringify(checkedItems));
+
+                // Send to PHP
+                fetch("php/modal-checkout.php", { method: "POST", body: formData })
+                    .then(res => res.json())
+                    .then(result => {
+                        if (result.success) {
+                            // Hide checkout modal
+                            bootstrap.Modal.getOrCreateInstance(document.getElementById("checkoutModal")).hide();
+                            // Show success modal
+                            bootstrap.Modal.getOrCreateInstance(document.getElementById("successModal")).show();
+                            // Reload cart
+                            if (typeof loadCart === "function") loadCart();
+                            updateCheckoutButtons();
+                        } else {
+                            alert("Error processing checkout");
+                        }
+                    })
+                    .catch(err => console.error("Checkout error:", err));
+            });
+
+            // Update buttons whenever total changes
+            document.addEventListener("change", () => {
+                if (typeof calculateTotal === "function") calculateTotal();
+                updateCheckoutButtons();
             });
         });
+        window.addEventListener("load", () => {
+            const checkoutBtn = document.getElementById("checkout");
+            if (!checkoutBtn) return console.error("Checkout button not found!");
 
-        // Add smooth scroll
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth' });
-                }
-            });
+            const checkoutModalEl = document.getElementById("checkoutModal");
+            if (!checkoutModalEl) return console.error("Checkout modal not found!");
+
+            const modalCheckoutBtn = document.getElementById("modalCheckoutBtn");
+            const totalEl = document.getElementById("total");
+
+            // Your rest of JS...
         });
+
+
+
 
         document.addEventListener("DOMContentLoaded", function () {
             const currentUser = JSON.parse(localStorage.getItem("currentUser"));
@@ -990,6 +909,149 @@
                 if (alertBanner) alertBanner.classList.add("d-none");
             }
         });
+
+
+        document.addEventListener("DOMContentLoaded", () => {
+            console.log("DOM fully loaded");
+            loadCart();
+        });
+
+        function updateQty(productName, change) {
+            const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+            if (!currentUser) return;
+
+            // Save checked items
+            const checkedItems = Array.from(document.querySelectorAll(".cart-checkbox"))
+                .filter(cb => cb.checked)
+                .map(cb => cb.closest(".cart-item").querySelector("h5").textContent);
+
+            const data = new FormData();
+            data.append("user_id", currentUser.id);
+            data.append("cart", productName);
+            data.append("change", change);
+
+            fetch("php/checkout.php", { method: "POST", body: data })
+                .then(res => res.json())
+                .then(() => {
+                    loadCart(checkedItems); // Pass checked items to reload function
+                })
+                .catch(err => console.error("Error updating quantity:", err));
+        }
+
+        function loadCart(checkedItems = []) {
+            const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+            if (!currentUser) return;
+
+            const data = new FormData();
+            data.append("user_id", currentUser.id);
+
+            fetch("php/checkout.php", { method: "POST", body: data })
+                .then(res => res.json())
+                .then(result => {
+                    const cardsContainer = document.getElementById("cards");
+                    cardsContainer.innerHTML = result.html;
+
+                    // Restore checked items
+                    cardsContainer.querySelectorAll(".cart-item").forEach(item => {
+                        const productName = item.querySelector("h5").textContent;
+                        const checkbox = item.querySelector(".cart-checkbox");
+                        if (checkbox && checkedItems.includes(productName)) {
+                            checkbox.checked = true;
+                        }
+                    });
+
+                    initCartJS(); // Reattach event listeners
+                })
+                .catch(err => console.error("Error loading cart:", err));
+        }
+
+        function initCartJS() {
+            const cardsContainer = document.getElementById("cards");
+            const totalEl = document.getElementById("total");
+
+            if (!cardsContainer) return;
+
+            const cartItems = cardsContainer.querySelectorAll(".cart-item");
+
+            cartItems.forEach((item, index) => {
+                const row = item.querySelector(".row");
+                if (!row) return;
+
+                const checkbox = item.querySelector(".cart-checkbox");
+                if (checkbox) {
+                    checkbox.addEventListener("change", calculateTotal);
+                }
+            });
+
+            calculateTotal();
+        }
+
+        function calculateTotal() {
+            const cardsContainer = document.getElementById("cards");
+            const totalEl = document.getElementById("total");
+            if (!cardsContainer) return;
+
+            let total = 0;
+            const items = cardsContainer.querySelectorAll(".cart-item");
+
+            items.forEach((item) => {
+                const checkbox = item.querySelector(".cart-checkbox");
+                const priceEl = item.querySelector("#price");
+                const qtyInput = item.querySelector("#quantity");
+
+                if (!checkbox || !checkbox.checked) return;
+                if (!priceEl || !qtyInput) return;
+
+                const price = parseFloat(priceEl.textContent.replace(/[₱,$]/g, "")) || 0;
+                const quantity = parseInt(qtyInput.value) || 1;
+                total += price * quantity;
+            });
+
+            if (totalEl) totalEl.textContent = `₱${total.toFixed(2)}`;
+        }
+
+        // Update quantity
+        function updateQty(productName, change) {
+            const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+            if (!currentUser) return;
+
+            // Save checked items
+            const checkedItems = Array.from(document.querySelectorAll(".cart-checkbox"))
+                .filter(cb => cb.checked)
+                .map(cb => cb.closest(".cart-item").querySelector("h5").textContent);
+
+            const data = new FormData();
+            data.append("user_id", currentUser.id);
+            data.append("cart", productName);
+            data.append("change", change);
+
+            fetch("php/checkout.php", { method: "POST", body: data })
+                .then(res => res.json())
+                .then(() => {
+                    loadCart(checkedItems); // Pass checked items to reload function
+                })
+                .catch(err => console.error("Error updating quantity:", err));
+        }
+
+        // Remove item
+        function removeItem(productName) {
+            const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+            if (!currentUser) return;
+
+            const data = new FormData();
+            data.append("user_id", currentUser.id);
+            data.append("cart", productName);
+            data.append("remove", 1);
+
+            fetch("php/checkout.php", { method: "POST", body: data })
+                .then(res => res.json())
+                .then(() => loadCart())
+                .catch(err => console.error("Error removing item:", err));
+        }
+
+
+
+
 
     </script>
 </body>

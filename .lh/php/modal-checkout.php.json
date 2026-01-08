@@ -1,0 +1,18 @@
+{
+    "sourceFile": "php/modal-checkout.php",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1767848201031,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1767848201031,
+            "name": "Commit-0",
+            "content": "<?php\r\nheader(\"Content-Type: application/json\");\r\nerror_reporting(E_ALL);\r\nini_set(\"display_errors\", 1);\r\n\r\n$conn = new mysqli(\"localhost\", \"root\", \"\", \"ecommerce\");\r\nif ($conn->connect_error) {\r\n    echo json_encode([\"success\" => false, \"message\" => \"DB connection failed\"]);\r\n    exit;\r\n}\r\n\r\n$user_id = $_POST[\"user_id\"] ?? '';\r\n$items = isset($_POST[\"items\"]) ? json_decode($_POST[\"items\"], true) : [];\r\n\r\nif ($user_id && !empty($items)) {\r\n    $del = $conn->prepare(\"DELETE FROM carts WHERE user_id = ? AND Cart = ?\");\r\n    foreach ($items as $item) {\r\n        $del->bind_param(\"is\", $user_id, $item);\r\n        $del->execute();\r\n    }\r\n    $del->close();\r\n}\r\n\r\n// You can also save shipping/payment info here if needed\r\n\r\necho json_encode([\"success\" => true]);\r\n$conn->close();\r\n?>\r\n"
+        }
+    ]
+}
