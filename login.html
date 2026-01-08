@@ -279,6 +279,19 @@
             const email = document.getElementById('loginEmail').value.trim();
             const password = document.getElementById('loginPassword').value;
 
+            // ADMIN LOGIN CHECK
+            if (email === "Admin@123" && password === "123") {
+                localStorage.setItem("currentUser", JSON.stringify({
+                    id: 22,
+                    username: email
+                }));
+
+                alert("Admin login successful!");
+                window.location.href = "admin/dashboard.html";
+                return; // stop further login request
+            }
+
+            // NORMAL USER LOGIN
             const formData = new FormData();
             formData.append('email', email);
             formData.append('password', password);
@@ -291,16 +304,19 @@
                 const result = await response.json();
 
                 if (result.success) {
-                    // Store current user info in localStorage
+
                     localStorage.setItem('currentUser', JSON.stringify({
                         id: result.data.ID,
                         username: result.data.Username
                     }));
+
                     alert('Login successful!');
-                    window.location.href = 'index.html'; // redirect after login
+                    window.location.href = 'index.html';
+
                 } else {
                     alert(result.message);
                 }
+
             } catch (err) {
                 console.error(err);
                 alert('An error occurred while logging in.');

@@ -12,16 +12,34 @@ if ($conn->connect_error) {
 $user_id = $_POST["user_id"] ?? '';
 $items = isset($_POST["items"]) ? json_decode($_POST["items"], true) : [];
 
+// Expecting quantities as associative array: { "Product Name": quantity }
+$quantities = isset($_POST["quantities"]) ? json_decode($_POST["quantities"], true) : [];
+
 if ($user_id && !empty($items)) {
-    $del = $conn->prepare("DELETE FROM carts WHERE user_id = ? AND Cart = ?");
+
+    // Prepare delete statement for cart
+    $delCart = $conn->prepare("DELETE FROM carts WHERE user_id = ? AND Cart = ?");
+
+    // Prepare update statement for products
+    $updateProd = $conn->prepare("UPDATE products SET Sold = Sold + ? WHERE `Product Name` = ?");
+
     foreach ($items as $item) {
-        $del->bind_param("is", $user_id, $item);
-        $del->execute();
+        $qty = isset($quantities[$item]) ? intval($quantities[$item]) : 1;
+
+        // Update Sold column
+        $updateProd->bind_param("is", $qty, $item);
+        $updateProd->execute();
+
+        // Remove from cart
+        $delCart->bind_param("is", $user_id, $item);
+        $delCart->execute();
     }
-    $del->close();
+
+    $delCart->close();
+    $updateProd->close();
 }
 
-// You can also save shipping/payment info here if needed
+// Optional: handle shipping/payment info here
 
 echo json_encode(["success" => true]);
 $conn->close();

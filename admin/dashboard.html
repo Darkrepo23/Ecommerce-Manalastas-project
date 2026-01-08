@@ -165,28 +165,28 @@
                 <div class="col-12 col-md-3 mb-3 mb-md-0">
 
                     <div class="stat-card">
-                        <h3 class="mb-0">₱10,520</h3>
+                        <h3 class="mb-0" id="total-sales">₱10,520</h3>
                         <small>Total Sales</small>
                     </div>
                 </div>
 
                 <div class="col-12 col-md-3 mb-3 mb-md-0">
                     <div class="stat-card">
-                        <h3 class="mb-0">320</h3>
+                        <h3 class="mb-0" id="total-users">320</h3>
                         <small>Users</small>
                     </div>
                 </div>
 
                 <div class="col-12 col-md-3 mb-3 mb-md-0">
                     <div class="stat-card">
-                        <h3 class="mb-0">48</h3>
+                        <h3 class="mb-0" id="total-products">48</h3>
                         <small>Products</small>
                     </div>
                 </div>
 
                 <div class="col-12 col-md-3 mb-3 mb-md-0">
                     <div class="stat-card">
-                        <h3 class="mb-0">289</h3>
+                        <h3 class="mb-0" id="total-solds">289</h3>
                         <small>Solds</small>
                     </div>
                 </div>
@@ -205,47 +205,115 @@
             document.getElementById("sidebar").classList.toggle("active");
         }
 
-        const ctx = document.getElementById('salesChart').getContext('2d');
+        async function loadDashboard() {
+            try {
+                console.log("Fetching dashboard data...");
 
-        const salesChart = new Chart(ctx, {
-            type: 'bar', // can be 'line', 'pie', etc.
-            data: {
-                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'], // example months
-                datasets: [
-                    {
-                        label: 'Total Sales (₱)',
-                        data: [10520, 12500, 9800, 14500, 13000, 15000],
-                        backgroundColor: 'rgba(54, 162, 235, 0.7)',
-                        borderColor: 'rgba(54, 162, 235, 1)',
-                        borderWidth: 1
-                    },
-                    {
-                        label: 'Sold Items',
-                        data: [289, 320, 250, 400, 380, 420],
-                        backgroundColor: 'rgba(255, 99, 132, 0.7)',
-                        borderColor: 'rgba(255, 99, 132, 1)',
-                        borderWidth: 1
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        position: 'top',
-                    },
-                    title: {
-                        display: true,
-                        text: 'Monthly Sales & Sold Items'
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
+                const res = await fetch("../php/chart.php");
+
+                console.log("Fetch response status:", res.status, res.statusText);
+
+                // Read raw text first
+                const text = await res.text();
+                console.log("Raw response from PHP:", text);
+
+                // Try to parse JSON
+                let data;
+                try {
+                    data = JSON.parse(text);
+                } catch (jsonErr) {
+                    console.error("Failed to parse JSON:", jsonErr);
+                    return;
                 }
+
+                console.log("Parsed JSON data:", data);
+
+                if (!data.success) {
+                    console.error("Dashboard error from PHP:", data.message || "Unknown error");
+                    return;
+                }
+
+                // ----------------- Update Stats -----------------
+                const totalSalesEl = document.getElementById("total-sales");
+                const totalUsersEl = document.getElementById("total-users");
+                const totalProductsEl = document.getElementById("total-products");
+                const totalSoldsEl = document.getElementById("total-solds");
+                const chartEl = document.getElementById('salesChart');
+
+                if (!totalSalesEl || !totalUsersEl || !totalProductsEl || !totalSoldsEl || !chartEl) {
+                    console.error("One or more HTML elements are missing!");
+                    return;
+                }
+
+                totalSalesEl.textContent = `₱${data.totalSales.toLocaleString()}`;
+                totalUsersEl.textContent = data.totalUsers;
+                totalProductsEl.textContent = data.totalProducts;
+                totalSoldsEl.textContent = data.totalSolds;
+
+                // ----------------- Chart.js -----------------
+                const ctx = chartEl.getContext('2d');
+
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                        datasets: [
+                            {
+                                label: 'Total Sales (₱)',
+                                data: data.salesByMonth,
+                                backgroundColor: 'rgba(54, 162, 235, 0.7)',
+                                borderColor: 'rgba(54, 162, 235, 1)',
+                                borderWidth: 1
+                            },
+                            {
+                                label: 'Sold Items',
+                                data: data.soldsByMonth,
+                                backgroundColor: 'rgba(255, 99, 132, 0.7)',
+                                borderColor: 'rgba(255, 99, 132, 1)',
+                                borderWidth: 1
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: { position: 'top' },
+                            title: { display: true, text: 'Monthly Sales & Sold Items' }
+                        },
+                        scales: { y: { beginAtZero: true } }
+                    }
+                });
+
+            } catch (err) {
+                console.error("Error loading dashboard:", err);
             }
-        });
+        }
+
+        document.addEventListener("DOMContentLoaded", loadDashboard);
+
+
+
+        async function loadDashboardStats() {
+            try {
+                const res = await fetch("../php/dashboard-admin.php");
+                const data = await res.json();
+
+                if (!data.success) {
+                    console.error("Failed to load dashboard stats");
+                    return;
+                }
+
+                // Update UI
+                document.getElementById("total-users").textContent = data.users;
+                document.getElementById("total-products").textContent = data.products;
+                document.getElementById("total-solds").textContent = data.solds;
+                document.getElementById("total-sales").textContent = "₱" + data.sales.toLocaleString();
+            } catch (err) {
+                console.error("Dashboard stats error:", err);
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", loadDashboardStats);
     </script>
 
 </body>
