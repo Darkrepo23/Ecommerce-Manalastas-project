@@ -953,6 +953,18 @@
                 .then(res => res.json())
                 .then(result => {
                     const cardsContainer = document.getElementById("cards");
+
+                    // Check if cart is empty
+                    if (!result.html || result.html.trim() === "") {
+                        cardsContainer.innerHTML = `
+                    <div class="alert alert-info text-center" role="alert">
+                        Your cart is empty.
+                    </div>
+                `;
+                        return; // Stop further processing
+                    }
+
+                    // If cart has items, render them
                     cardsContainer.innerHTML = result.html;
 
                     // Restore checked items

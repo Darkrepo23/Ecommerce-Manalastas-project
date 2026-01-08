@@ -367,9 +367,10 @@
             <h5 class="mb-0">Best Sellers</h5>
             <div>
                 <select class="form-select d-inline-block w-auto">
-                    <option>Sort by Date</option>
-                    <option>Sort by Price</option>
-                    <option>Sort by Popularity</option>
+                    <option id="newProduct">New Product</option>
+                    <option id="higherPrice">Higher Price</option>
+                    <option id="lowerPrice">Lower Price</option>
+                    <option id="sortRate">Sort by Rate</option>
                 </select>
                 <a href="#" class="ms-3">View All</a>
             </div>
@@ -471,6 +472,49 @@
     <!-- Bootstrap JS and Popper.js (required for dropdowns) -->
     <script>
 
+        // Wait for DOM
+document.addEventListener('DOMContentLoaded', () => {
+    const sortSelect = document.querySelector('#products select');
+    const container = document.getElementById('productsContainer');
+
+    sortSelect.addEventListener('change', () => {
+        const option = sortSelect.value;
+
+        // Get cards as array
+        const cards = Array.from(container.children);
+
+        cards.sort((a, b) => {
+            // Get product info from card
+            const priceA = parseFloat(a.querySelector('.price').textContent.replace('$', '')) || 0;
+            const priceB = parseFloat(b.querySelector('.price').textContent.replace('$', '')) || 0;
+
+            const rateA = parseInt(a.querySelector('.ratings').textContent.replace(/[^0-9]/g, '')) || 0;
+            const rateB = parseInt(b.querySelector('.ratings').textContent.replace(/[^0-9]/g, '')) || 0;
+
+            // Adding date stored as data attribute for each card? We'll add it dynamically
+            const dateA = new Date(a.dataset.addingDate || 0);
+            const dateB = new Date(b.dataset.addingDate || 0);
+
+            switch (option) {
+                case 'Sort by Rate':
+                    return rateB - rateA; // higher rating first
+                case 'Higher Price':
+                    return priceB - priceA; // high price first
+                case 'Lower Price':
+                    return priceA - priceB; // low price first
+                case 'New Product':
+                    return dateB - dateA; // newest first
+                default:
+                    return 0;
+            }
+        });
+
+        // Append sorted cards back to container
+        cards.forEach(card => container.appendChild(card));
+    });
+});
+
+
 
         document.getElementById("searchBtn").addEventListener("click", searchProducts);
         document.getElementById("search-query").addEventListener("input", searchProducts);
@@ -526,6 +570,7 @@
         async function loadProducts() {
             const container = document.getElementById('productsContainer');
             container.innerHTML = '';
+            
 
             try {
                 const res = await fetch('php/index-product.php');
@@ -541,17 +586,19 @@
                     for (let i = 1; i <= 5; i++) {
                         stars += i <= prod.ratings ? '&#9733;' : '&#9734;';
                     }
+                   
 
                     const card = document.createElement('div');
+                    card.dataset.addingDate = prod.addingDate; // e.g., "2026-01-08"
                     card.classList.add('col-md-3');
                     card.innerHTML = `
                 <div class="product-card border p-3 h-100">
                     <img src="${prod.productImg || 'https://via.placeholder.com/150'}" alt="product" class="img-fluid">
                     <h6 class="mt-3 mb-1 prodName">${prod.productName}</h6>
                     <p class="text-muted mb-1">${prod.stock} stocks</p>
-                    <p class="fw-bold mb-1">$${prod.price}</p>
+                    <p class="fw-bold mb-1 price">$${prod.price}</p>
                     <div class="mb-2">
-                        <span class="text-warning">${stars}</span> ${prod.ratings}/5
+                        <span class="text-warning ratings">${stars}</span> ${prod.ratings}/5
                     </div>
                     <p class="small text-secondary specs">${prod.description}</p>
                     <button class="btn btn-primary btn-sm mt-2 w-100">Add to cart</button>

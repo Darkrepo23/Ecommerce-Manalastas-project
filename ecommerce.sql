@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 08, 2026 at 06:36 AM
+-- Generation Time: Jan 08, 2026 at 11:43 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -39,8 +39,8 @@ CREATE TABLE `carts` (
 --
 
 INSERT INTO `carts` (`id`, `user_id`, `Cart`, `Quantity`) VALUES
-(4, 7, 'asdsd', 11),
-(5, 7, 'Zx', 1);
+(7, 7, 'Zx', 1),
+(8, 22, 'Zx', 2);
 
 -- --------------------------------------------------------
 
@@ -64,7 +64,7 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`Product Name`, `Description`, `Ratings`, `Stock`, `Sold`, `Product Img`, `Adding Date`, `Price`) VALUES
-('Zx', 'aadsadasd', '2', 232, 0, 'uploads/prod_695d325d865806.99443201.png', '2026-01-06', 34344),
+('Zx', 'aadsadasd', '2', 232, 9, 'uploads/prod_695d325d865806.99443201.png', '2026-01-06', 34344),
 ('asdsd', '2323', '5', 2323, 0, 'uploads/prod_695d71bb441063.31194275.png', '2026-01-06', 23);
 
 -- --------------------------------------------------------
@@ -88,8 +88,8 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`ID`, `Username`, `Email`, `Password`, `ProfileImg`, `DateCreated`) VALUES
 (3, 'asdad', 'cosmarkgarcia@gmail.com', '$2y$10$Nxd3nH.pUWdEmTNaHprR5e855ZqhHJlSmrB3rXyVdt4LV97ELB/hy', '../uploads/users/user_695d2473d1c113.87862721.png', '2026-01-06 23:04:19'),
-(5, 'sdfsdf', 'vincentjames.manalastas@yahoo.com', '$2y$10$RVCnhuQlyxUl0j46hPXRU.cSxiilkYPS0/rx1nTi7eY3xJbtAPaFO', '../uploads/users/user_695d279b8b3ff6.63251455.png', '2026-01-06 23:17:47'),
-(7, 'vincent', 'vincentmanalastas827@gmail.com', '$2y$10$nDFbpd9xBOXuc1fPWTseIeIfTD1LoYzxNTFsZrbt0Wr4.k.JEjfN2', NULL, '2026-01-07 03:10:03');
+(7, 'vincent', 'vincentmanalastas827@gmail.com', '$2y$10$nDFbpd9xBOXuc1fPWTseIeIfTD1LoYzxNTFsZrbt0Wr4.k.JEjfN2', NULL, '2026-01-07 03:10:03'),
+(8, 'elms123', 'manalastasjg@gmail.com', '$2y$10$YlDjDS8awKW2pEULw5vPeuTIOo4QpFzRm61GePtqTckPM0fzYGJ.y', '../uploads/users/user_695f76340e3713.96235396.png', '2026-01-08 17:17:40');
 
 --
 -- Indexes for dumped tables
@@ -117,13 +117,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `carts`
 --
 ALTER TABLE `carts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
